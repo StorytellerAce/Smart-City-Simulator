@@ -18,7 +18,7 @@ public class WebSocketService
     public event Action<string> OnMessage;
     public event Action<string> OnAIResponseReceived;
 
-    private string baseWsUrl = "ws://localhost:8000/ai/ws";
+    private string baseWsUrl;
 
     public WebSocketService(string baseWsUrl)
     {

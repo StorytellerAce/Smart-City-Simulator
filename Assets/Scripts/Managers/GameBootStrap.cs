@@ -28,18 +28,12 @@ public class GameBootstrap : MonoBehaviour
     [SerializeField] private BuildingDefinition townHallDefinition;
     [SerializeField] private TMP_Text sessionIdText;
 
+    [SerializeField] private Settings settings; // Reference to the settings ScriptableObject
     // testing use
     [SerializeField] private GameObject TestButton;
-    [SerializeField] private string baseUrl = "http://localhost:8000";
-    [SerializeField] private string baseWsUrl = "ws://localhost:8000/ws";
 
     private Vector3Int townHallPosition = new Vector3Int(10, 1);
     private List<Vector3> initialRoadPoints = new List<Vector3> { new Vector3(17, 5), new Vector3(22, 5), new Vector3(10, 14), new Vector3(10, 22) };
-    private int gridWidth = 80;
-    private int gridHeight = 80;
-    private int initialAP = 3;
-    private int maxAP = 3;
-    private int initialGold = 4000;
     private AnalyticsService analyticsService;
     private BuildingRegistry buildingRegistry;
 
@@ -52,10 +46,10 @@ public class GameBootstrap : MonoBehaviour
 
         // Game resource services 
         buildingRegistry = new BuildingRegistry();
-        GameData gameData = new GameData { Gold = initialGold };
+        GameData gameData = new GameData { Gold = settings.InitialGold };
         GoldService goldService = new GoldService(gameData.Gold, buildingRegistry);
-        GridService gridService = new GridService(new GameGrid(gridWidth, gridHeight), gridOccupancyVisual);
-        ActionPointService apService = new ActionPointService(initialAP, maxAP);
+        GridService gridService = new GridService(new GameGrid(settings.GridWidth, settings.GridHeight), gridOccupancyVisual);
+        ActionPointService apService = new ActionPointService(settings.InitialAP, settings.MaxAP);
         SupplyService supplyService = new SupplyService();
 
         // Game logic services
@@ -79,17 +73,17 @@ public class GameBootstrap : MonoBehaviour
             apService, buildingRegistry, analyticsService);
 
         // Server 
-        ApiService apiService = new ApiService(baseUrl);
-        WebSocketService webSocketService = new WebSocketService(baseWsUrl);
+        ApiService apiService = new ApiService(settings.BaseUrl);
+        WebSocketService webSocketService = new WebSocketService(settings.BaseWsUrl);
 
         // todo: doc on the sequence of intialization
         // todo: clean magic numbers here and throughout the codebase
-        gameServerController.Initialize(apiService, analyticsService, webSocketService, sessionContext, difficultyAdjuster, resourceService);
+        gameServerController.Initialize(settings, apiService, analyticsService, webSocketService, sessionContext, difficultyAdjuster, resourceService);
 
         ObjectiveService objectiveService = new ObjectiveService(objectiveDefinitions, buildingRegistry,
             goldService, resourceService, gameServerController, difficultyAdjuster, populationService);
 
-        gridOccupancyVisual.Initialize(gridWidth, gridHeight);
+        gridOccupancyVisual.Initialize(settings.GridWidth, settings.GridHeight);
         gridController.Initialize(gridMaterial, gridOverlay);
         placementController.Initialize(gridController, placementService, apService, gridService, playArea, placementModeService);
         buildingActionController.Initialize(placementService, gridService, placementModeService, apService);
@@ -97,7 +91,7 @@ public class GameBootstrap : MonoBehaviour
         newspaperUI.Initialize(gameServerController);
         selectorDisplayUI.Initialize(buildingActionController);
         objectiveDisplayUI.Initialize(objectiveService, turnService);
-        turnManager.Initialize(buildingRegistry, goldService, populationService, pollutionService,
+        turnManager.Initialize(settings, buildingRegistry, goldService, populationService, pollutionService,
             placementModeService, objectiveService, serviceEffectService, apService, analyticsService, turnService, supplyService, resourceDisplayUI
             , gameServerController, resourceService);
         roadPlacementController.Initialize(gridController, gridService, playArea, roadPlacementService, placementModeService, buildingRegistry);

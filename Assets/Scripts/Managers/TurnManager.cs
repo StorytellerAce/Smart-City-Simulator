@@ -18,11 +18,8 @@ public class TurnManager : MonoBehaviour
     private SupplyService supplyService;
     private ResourceDisplayUI resourceDisplayUI;
     private GameServerController gameServerController;
-    private readonly int GenerateAdviceTurns = 5;
-    private readonly int GenerateObjectiveTurn = 16;
-    private readonly int GenerateReactionTurn = 3;
-
-    public void Initialize(BuildingRegistry buildingRegistry, GoldService goldService, PopulationService populationService,
+    private Settings settings;
+    public void Initialize(Settings settings, BuildingRegistry buildingRegistry, GoldService goldService, PopulationService populationService,
         PollutionService pollutionService, PlacementModeService placementModeService, ObjectiveService objectiveService,
         ServiceEffectService serviceEffectService, ActionPointService apService, AnalyticsService analyticsService,
         TurnService turnService, SupplyService supplyService, ResourceDisplayUI resourceDisplayUI,
@@ -42,6 +39,7 @@ public class TurnManager : MonoBehaviour
         this.resourceDisplayUI = resourceDisplayUI;
         this.gameServerController = gameServerController;
         this.resourceService = resourceService;
+        this.settings = settings;
     }
 
     public void OnTurnEnd()
@@ -90,7 +88,7 @@ public class TurnManager : MonoBehaviour
         TurnActionSummary actionSummary = analyticsService.GetTurnSummary(turnService.CurrentTurnCount - 1);
 
 
-        if ((turnService.CurrentTurnCount - 1) % GenerateReactionTurn == 0)
+        if ((turnService.CurrentTurnCount - 1) % settings.GenerateReactionTurn == 0)
         {
             gameServerController.GenerateReaction(turnSnapshot, actionSummary);
         }
@@ -98,15 +96,15 @@ public class TurnManager : MonoBehaviour
         {
             gameServerController.RecordTurnData(resourceService.CurrentSessionId, turnSnapshot, actionSummary);
         }
-        if ((turnService.CurrentTurnCount - 1) % GenerateAdviceTurns == 0)
+        if ((turnService.CurrentTurnCount - 1) % settings.GenerateAdviceTurns == 0)
         {
             gameServerController.GenerateAdvice(analyticsService.BuildAdviceSummary());
         }
-        if (turnService.CurrentTurnCount == GenerateObjectiveTurn)
+        if (turnService.CurrentTurnCount == settings.GenerateObjectiveTurn)
         {
             gameServerController.GenerateObjective();
         }
-        if (turnService.CurrentTurnCount == 21)
+        if (turnService.CurrentTurnCount == settings.EndTurnCount)
         {
             EndGame();
         }

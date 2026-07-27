@@ -13,6 +13,7 @@ public class GameServerController : MonoBehaviour
     private SessionContext sessionContext;
     private DynamicDifficultyAdjuster difficultyAdjuster;
     private ResourceService resourceService;
+    private Settings settings;
 
     public event Action<string> onReactionReceived;
     public event Action<string> onAdviceReceived;
@@ -40,9 +41,10 @@ public class GameServerController : MonoBehaviour
             Json = json;
         }
     }
-    public void Initialize(ApiService apiService, AnalyticsService analyticsService, WebSocketService webSocketService, SessionContext sessionContext,
+    public void Initialize(Settings settings, ApiService apiService, AnalyticsService analyticsService, WebSocketService webSocketService, SessionContext sessionContext,
     DynamicDifficultyAdjuster difficultyAdjuster, ResourceService resourceService)
     {
+        this.settings = settings;
         this.apiService = apiService;
         this.analyticsService = analyticsService;
         this.webSocketService = webSocketService;
@@ -276,8 +278,8 @@ public class GameServerController : MonoBehaviour
             averageFinalPopulation = avgFinalPopulation
         };
 
-        // 👇 REMOVE ReachPopulation if too crazy
-        if (estimatedPopulation > currentPopulation * 2.5f)
+        // Remove ReachPopulation target if too crazy
+        if (estimatedPopulation > currentPopulation * settings.PopulationLimiterThreshold)
         {
             wrapper.objectiveTypes.Remove("ReachPopulation");
         }

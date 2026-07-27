@@ -8,11 +8,9 @@ load_dotenv()
 
 class GeminiService:
     def __init__(self):
-        # api_key = os.getenv("GEMINI_API_KEY")
-        api_key = "AIzaSyA615wi-4DkphbYt1HBp1YnphdcTJQ5EFo"
+        api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
             raise ValueError("GEMINI_API_KEY is not set.")
-
         self.client = genai.Client(api_key=api_key)
         self.model = "gemini-2.5-flash"
 
@@ -38,11 +36,15 @@ class GeminiService:
                         input=prompt
                     )
 
-                print("Gemini response:", response.outputs[-1].text)
+                print(response)
+                print(type(response))
+                print(dir(response))
+
+                print("Gemini response:", response.output_text)
                 print("Gemini interaction ID:", response.id)
 
                 return {
-                    "text": response.outputs[-1].text,
+                    "text": response.output_text,
                     "interaction_id": response.id
                 }
 

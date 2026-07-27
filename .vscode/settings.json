@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "FYP.sln"
+    "dotnet.defaultSolution": "Smart-City-Simulator.sln"
 }

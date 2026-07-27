@@ -98,3 +98,12 @@ InitTestScene*.unity*
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 .fake
+/Assets/Sunnyside_World_ASSET_PACK_V2.1/
+
+# DevNote & env
+DevNotes.md
+.env
+
+# Python cache
+__pycache__/
+*.pyc

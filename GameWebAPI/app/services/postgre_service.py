@@ -2,16 +2,20 @@ import psycopg2
 from psycopg2.extras import Json
 from app.models.dto import TurnSnapshotDto
 from app.models.TurnActionSummaryDto import TurnActionSummaryDto
-
+import os
 
 class PostgresService:
     def __init__(self):
+        print(os.getenv("DB_HOST"))
+        print(os.getenv("DB_NAME"))
+        print(os.getenv("DB_USER"))
+        print(os.getenv("DB_PASSWORD"))
         self.conn = psycopg2.connect(
-            host="localhost",
-            database="postgres",
-            user="postgres",
-            password="teoh0628",
-            port=5432
+            host=os.getenv("DB_HOST"),
+            database=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            port=os.getenv("DB_PORT")
         )
 
     def save_session(self, session: dict):

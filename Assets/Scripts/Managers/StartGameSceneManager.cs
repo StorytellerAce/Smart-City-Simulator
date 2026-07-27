@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class StartGameSceneManager : MonoBehaviour
 {
-    private string MainSceneName = "MainScene";
+    private string MainSceneName = SceneName.MainScene.ToString();
 
     public void PlayGame(){
         SceneManager.LoadSceneAsync(MainSceneName); 
