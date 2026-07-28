@@ -36,13 +36,6 @@ class GeminiService:
                         input=prompt
                     )
 
-                print(response)
-                print(type(response))
-                print(dir(response))
-
-                print("Gemini response:", response.output_text)
-                print("Gemini interaction ID:", response.id)
-
                 return {
                     "text": response.output_text,
                     "interaction_id": response.id

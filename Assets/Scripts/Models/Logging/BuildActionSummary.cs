@@ -1,10 +1,9 @@
 using System;
 using MyGame;
 
-[System.Serializable]
-
+[Serializable]
 public class BuildActionSummary
 {
     public BuildingType BuildingType;
-    public Point Position;
+    public PointDto Position;
 }

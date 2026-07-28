@@ -11,6 +11,7 @@ from app.models.dto import (
 from fastapi import APIRouter, HTTPException
 from typing import Dict, Any
 from app.dependencies import session_service
+from pydantic import BaseModel
 
 router = APIRouter()
 @router.post("/start", response_model=StartSessionResponse)
@@ -32,19 +33,17 @@ def get_session(session_id: str):
     return session
 
 @router.post("/{session_id}/turn-data")
-def receive_turn_data(session_id: str, request_body: Dict[str, Any]):
+def receive_turn_data(
+    session_id: str,
+    request_body: TurnDataRequest
+):
     if not session_service.session_exists(session_id):
         raise HTTPException(status_code=404, detail="Session not found.")
 
-    turn_snapshot = request_body.get("turn_snapshot")
-    turn_action_summary = request_body.get("turn_action_summary")
-
-    if turn_snapshot is None:
-        raise HTTPException(status_code=400, detail="Missing turn_snapshot data.")
-
-    if turn_action_summary is None:
-        raise HTTPException(status_code=400, detail="Missing turn_action_summary data.")
-
-    session_service.add_turn_data(session_id, turn_snapshot, turn_action_summary)
+    session_service.add_turn_data(
+        session_id, 
+        request_body.turn_snapshot, 
+        request_body.turn_action_summary
+    )
 
     return {"message": "Turn data received."}

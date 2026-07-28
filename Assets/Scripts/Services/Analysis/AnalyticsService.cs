@@ -192,7 +192,7 @@ public class AnalyticsService
                     summary.BuildingsPlaced.Add(new BuildActionSummary
                     {
                         BuildingType = log.BuildingType,
-                        Position = log.Position
+                        Position = new PointDto(log.Position)
                     });
                     summary.ActionsTaken++;
                     break;

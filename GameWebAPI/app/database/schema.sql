@@ -33,8 +33,16 @@ CREATE TABLE turn_snapshots (
     road_count INTEGER NOT NULL,
 
     average_satisfaction_index DOUBLE PRECISION,
+    min_satisfaction_index DOUBLE PRECISION,
+    max_satisfaction_index DOUBLE PRECISION,
+
     average_pollution_index DOUBLE PRECISION,
+    min_pollution_index DOUBLE PRECISION,
+    max_pollution_index DOUBLE PRECISION,
+
     average_service_index DOUBLE PRECISION,
+    min_service_index DOUBLE PRECISION,
+    max_service_index DOUBLE PRECISION,
 
     houses_near_factory_count INTEGER,
     houses_without_service_count INTEGER,
