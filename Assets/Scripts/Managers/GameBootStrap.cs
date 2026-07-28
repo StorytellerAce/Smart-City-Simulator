@@ -29,11 +29,6 @@ public class GameBootstrap : MonoBehaviour
     [SerializeField] private TMP_Text sessionIdText;
 
     [SerializeField] private Settings settings; // Reference to the settings ScriptableObject
-    // testing use
-    [SerializeField] private GameObject TestButton;
-
-    private Vector3Int townHallPosition = new Vector3Int(10, 1);
-    private List<Vector3> initialRoadPoints = new List<Vector3> { new Vector3(17, 5), new Vector3(22, 5), new Vector3(10, 14), new Vector3(10, 22) };
     private AnalyticsService analyticsService;
     private BuildingRegistry buildingRegistry;
 
@@ -108,7 +103,7 @@ public class GameBootstrap : MonoBehaviour
         Logger.Log("Game initialized");
         // pre-game setup
         gridOverlay.SetActive(false);
-        gridMaterial.SetFloat("_HighlightRadius", 5f);
+        gridMaterial.SetFloat("_HighlightRadius", settings.HighlightRadius);
     }
 
     private async void Start()
@@ -130,6 +125,7 @@ public class GameBootstrap : MonoBehaviour
 
     private void MapSetup(SystemCommandExecutor commandExecutor)
     {
+        List<Vector3> initialRoadPoints = settings.InitialRoadPoints;
         // place road
         // i for start, i+1 for end
         for (int i = 0; i < initialRoadPoints.Count; i += 2)
@@ -137,7 +133,7 @@ public class GameBootstrap : MonoBehaviour
             commandExecutor.PlaceRoad(initialRoadPoints[i], initialRoadPoints[i + 1]);
         }
         // place town hall
-        commandExecutor.PlaceBuilding(townHallDefinition, townHallPosition);
+        commandExecutor.PlaceBuilding(townHallDefinition, settings.TownHallPosition);
     }
 
     public void OnApplicationQuit()

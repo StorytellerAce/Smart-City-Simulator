@@ -16,7 +16,11 @@ load_dotenv()
 
 logger = structlog.get_logger(__name__)
 
-app = FastAPI(title="Game AI Backend")
+app = FastAPI(
+    title="Game AI Backend",
+    description="Backend API for the Smart City Simulator",
+    version="1.0.0"
+    )
 
 app.add_middleware(
     CORSMiddleware,

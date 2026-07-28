@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: New Settings
   m_EditorClassIdentifier: 
   baseUrl: http://localhost:8000
-  baseWsUrl: ws://localhost:8000/ws
+  baseWsUrl: ws://localhost:8000/ai/ws
   generateReactionTurn: 3
   generateAdviceTurns: 5
   generateObjectiveTurn: 16

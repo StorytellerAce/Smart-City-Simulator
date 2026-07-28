@@ -6,10 +6,6 @@ import os
 
 class PostgresService:
     def __init__(self):
-        print(os.getenv("DB_HOST"))
-        print(os.getenv("DB_NAME"))
-        print(os.getenv("DB_USER"))
-        print(os.getenv("DB_PASSWORD"))
         self.conn = psycopg2.connect(
             host=os.getenv("DB_HOST"),
             database=os.getenv("DB_NAME"),

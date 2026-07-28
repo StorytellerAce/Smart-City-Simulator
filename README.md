@@ -111,6 +111,13 @@ At predefined turns, gameplay data is processed through a machine learning pipel
 
 ---
 
+## How to Launch Server
+
+cd GamewebAPI
+python -m uvicorn app.main:app --reload
+
+--- 
+
 ## Screenshots
 
 ### Main Menu

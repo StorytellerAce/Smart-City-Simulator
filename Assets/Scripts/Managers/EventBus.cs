@@ -4,9 +4,7 @@ using UnityEngine;
 public class EventBus : MonoBehaviour
 {
     public static EventBus Instance { get; private set; }
-
     private Queue<PopulationEvent> populationEvents = new Queue<PopulationEvent>();
-
     public event System.Action<PopulationEvent> OnPopulationEvent;
 
     void Awake()
