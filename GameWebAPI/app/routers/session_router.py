@@ -12,6 +12,7 @@ from fastapi import APIRouter, HTTPException
 from typing import Dict, Any
 from app.dependencies import session_service
 from pydantic import BaseModel
+import requests
 
 router = APIRouter()
 @router.post("/start", response_model=StartSessionResponse)
@@ -47,3 +48,20 @@ def receive_turn_data(
     )
 
     return {"message": "Turn data received."}
+
+@router.get("/{session_id}/submit-score")
+def submit_score(session_id: str):
+
+    payload = {
+        "player": "Kirito",
+        "score": 48763
+    }
+
+    response = requests.post(
+        "http://localhost:8080/scores",
+        json=payload
+    )
+
+    return {
+        "go_status": response.status_code
+    }
