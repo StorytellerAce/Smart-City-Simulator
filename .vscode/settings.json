@@ -56,5 +56,9 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "FYP.sln"
+    "dotnet.defaultSolution": "FYP.sln",
+    "csharp-dev-tools.solutionViewer.selectedWorkspaceSolutions": [
+        "FYP.sln",
+        "My project (1).sln"
+    ]
 }

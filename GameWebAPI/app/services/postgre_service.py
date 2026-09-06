@@ -198,3 +198,271 @@ class PostgresService:
                 for x in data.get("Demolitions", [])
             ]
         }
+
+    def save_session_features(self, features: dict):
+        with self.conn.cursor() as cur:
+            cur.execute("""
+                INSERT INTO session_features (
+                    session_id,
+
+                    avg_action_intensity,
+                    std_action_intensity,
+
+                    avg_upgrade_ratio,
+                    avg_demolish_ratio,
+                    avg_build_ratio,
+
+                    avg_build_house_ratio,
+                    avg_build_factory_ratio,
+                    avg_build_service_ratio,
+                    avg_build_supply_ratio,
+                    avg_build_road_ratio,
+
+                    avg_house_per_turn,
+                    avg_factory_per_turn,
+                    avg_service_per_turn,
+                    avg_supply_per_turn,
+                    avg_road_per_turn,
+
+                    avg_gold_per_population,
+                    avg_tax_per_population,
+                    avg_population_per_ap,
+                    avg_house_per_road,
+
+                    avg_bad_placement,
+                    avg_no_service,
+                    avg_low_satisfaction,
+
+                    avg_population_growth,
+                    avg_gold_growth,
+                    avg_supply_growth,
+                    avg_ap_growth,
+                    avg_satisfaction_growth,
+                    avg_service_growth,
+                    avg_pollution_growth,
+                    avg_tax_income_growth,
+
+                    std_population_growth,
+                    std_gold_growth,
+                    std_supply_growth,
+                    std_satisfaction_growth,
+                    std_service_growth,
+                    std_pollution_growth,
+
+                    avg_satisfaction_index,
+                    avg_service_index,
+                    avg_pollution_index,
+
+                    total_population_growth,
+                    total_gold_growth,
+                    total_supply_growth,
+                    total_ap_growth,
+                    total_tax_income_growth,
+
+                    supply_efficiency,
+                    avg_supply_ratio,
+                    min_supply_ratio,
+
+                    service_to_house,
+                    factory_to_house,
+
+                    used_service_early,
+                    used_factory_early,
+
+                    early_service_ratio,
+                    early_factory_ratio,
+                    early_service_to_house,
+                    early_factory_to_house,
+
+                    final_turn,
+                    final_gold,
+                    final_population,
+                    final_supply,
+                    final_ap,
+                    final_satisfaction,
+                    final_service,
+                    final_pollution,
+                    final_tax_income
+                )
+                VALUES (
+                    %s,
+                    %s, %s,
+                    %s, %s, %s,
+                    %s, %s, %s, %s, %s,
+                    %s, %s, %s, %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s,
+                    %s, %s, %s, %s, %s, %s, %s, %s,
+                    %s, %s, %s, %s, %s, %s,
+                    %s, %s, %s,
+                    %s, %s, %s, %s, %s,
+                    %s, %s, %s,
+                    %s, %s,
+                    %s, %s,
+                    %s, %s, %s, %s,
+                    %s, %s, %s, %s, %s, %s, %s
+                )
+                ON CONFLICT (session_id)
+                DO UPDATE SET
+                    avg_action_intensity = EXCLUDED.avg_action_intensity,
+                    std_action_intensity = EXCLUDED.std_action_intensity,
+
+                    avg_upgrade_ratio = EXCLUDED.avg_upgrade_ratio,
+                    avg_demolish_ratio = EXCLUDED.avg_demolish_ratio,
+                    avg_build_ratio = EXCLUDED.avg_build_ratio,
+
+                    avg_build_house_ratio = EXCLUDED.avg_build_house_ratio,
+                    avg_build_factory_ratio = EXCLUDED.avg_build_factory_ratio,
+                    avg_build_service_ratio = EXCLUDED.avg_build_service_ratio,
+                    avg_build_supply_ratio = EXCLUDED.avg_build_supply_ratio,
+                    avg_build_road_ratio = EXCLUDED.avg_build_road_ratio,
+
+                    avg_house_per_turn = EXCLUDED.avg_house_per_turn,
+                    avg_factory_per_turn = EXCLUDED.avg_factory_per_turn,
+                    avg_service_per_turn = EXCLUDED.avg_service_per_turn,
+                    avg_supply_per_turn = EXCLUDED.avg_supply_per_turn,
+                    avg_road_per_turn = EXCLUDED.avg_road_per_turn,
+
+                    avg_gold_per_population = EXCLUDED.avg_gold_per_population,
+                    avg_tax_per_population = EXCLUDED.avg_tax_per_population,
+                    avg_population_per_ap = EXCLUDED.avg_population_per_ap,
+                    avg_house_per_road = EXCLUDED.avg_house_per_road,
+
+                    avg_bad_placement = EXCLUDED.avg_bad_placement,
+                    avg_no_service = EXCLUDED.avg_no_service,
+                    avg_low_satisfaction = EXCLUDED.avg_low_satisfaction,
+
+                    avg_population_growth = EXCLUDED.avg_population_growth,
+                    avg_gold_growth = EXCLUDED.avg_gold_growth,
+                    avg_supply_growth = EXCLUDED.avg_supply_growth,
+                    avg_ap_growth = EXCLUDED.avg_ap_growth,
+                    avg_satisfaction_growth = EXCLUDED.avg_satisfaction_growth,
+                    avg_service_growth = EXCLUDED.avg_service_growth,
+                    avg_pollution_growth = EXCLUDED.avg_pollution_growth,
+                    avg_tax_income_growth = EXCLUDED.avg_tax_income_growth,
+
+                    std_population_growth = EXCLUDED.std_population_growth,
+                    std_gold_growth = EXCLUDED.std_gold_growth,
+                    std_supply_growth = EXCLUDED.std_supply_growth,
+                    std_satisfaction_growth = EXCLUDED.std_satisfaction_growth,
+                    std_service_growth = EXCLUDED.std_service_growth,
+                    std_pollution_growth = EXCLUDED.std_pollution_growth,
+
+                    avg_satisfaction_index = EXCLUDED.avg_satisfaction_index,
+                    avg_service_index = EXCLUDED.avg_service_index,
+                    avg_pollution_index = EXCLUDED.avg_pollution_index,
+
+                    total_population_growth = EXCLUDED.total_population_growth,
+                    total_gold_growth = EXCLUDED.total_gold_growth,
+                    total_supply_growth = EXCLUDED.total_supply_growth,
+                    total_ap_growth = EXCLUDED.total_ap_growth,
+                    total_tax_income_growth = EXCLUDED.total_tax_income_growth,
+
+                    supply_efficiency = EXCLUDED.supply_efficiency,
+                    avg_supply_ratio = EXCLUDED.avg_supply_ratio,
+                    min_supply_ratio = EXCLUDED.min_supply_ratio,
+
+                    service_to_house = EXCLUDED.service_to_house,
+                    factory_to_house = EXCLUDED.factory_to_house,
+
+                    used_service_early = EXCLUDED.used_service_early,
+                    used_factory_early = EXCLUDED.used_factory_early,
+
+                    early_service_ratio = EXCLUDED.early_service_ratio,
+                    early_factory_ratio = EXCLUDED.early_factory_ratio,
+                    early_service_to_house = EXCLUDED.early_service_to_house,
+                    early_factory_to_house = EXCLUDED.early_factory_to_house,
+
+                    final_turn = EXCLUDED.final_turn,
+                    final_gold = EXCLUDED.final_gold,
+                    final_population = EXCLUDED.final_population,
+                    final_supply = EXCLUDED.final_supply,
+                    final_ap = EXCLUDED.final_ap,
+                    final_satisfaction = EXCLUDED.final_satisfaction,
+                    final_service = EXCLUDED.final_service,
+                    final_pollution = EXCLUDED.final_pollution,
+                    final_tax_income = EXCLUDED.final_tax_income;
+            """, (
+                features["session_id"],
+
+                features["avg_action_intensity"],
+                features["std_action_intensity"],
+
+                features["avg_upgrade_ratio"],
+                features["avg_demolish_ratio"],
+                features["avg_build_ratio"],
+
+                features["avg_build_house_ratio"],
+                features["avg_build_factory_ratio"],
+                features["avg_build_service_ratio"],
+                features["avg_build_supply_ratio"],
+                features["avg_build_road_ratio"],
+
+                features["avg_house_per_turn"],
+                features["avg_factory_per_turn"],
+                features["avg_service_per_turn"],
+                features["avg_supply_per_turn"],
+                features["avg_road_per_turn"],
+
+                features["avg_gold_per_population"],
+                features["avg_tax_per_population"],
+                features["avg_population_per_ap"],
+                features["avg_house_per_road"],
+
+                features["avg_bad_placement"],
+                features["avg_no_service"],
+                features["avg_low_satisfaction"],
+
+                features["avg_population_growth"],
+                features["avg_gold_growth"],
+                features["avg_supply_growth"],
+                features["avg_ap_growth"],
+                features["avg_satisfaction_growth"],
+                features["avg_service_growth"],
+                features["avg_pollution_growth"],
+                features["avg_tax_income_growth"],
+
+                features["std_population_growth"],
+                features["std_gold_growth"],
+                features["std_supply_growth"],
+                features["std_satisfaction_growth"],
+                features["std_service_growth"],
+                features["std_pollution_growth"],
+
+                features["avg_satisfaction_index"],
+                features["avg_service_index"],
+                features["avg_pollution_index"],
+
+                features["total_population_growth"],
+                features["total_gold_growth"],
+                features["total_supply_growth"],
+                features["total_ap_growth"],
+                features["total_tax_income_growth"],
+
+                features["supply_efficiency"],
+                features["avg_supply_ratio"],
+                features["min_supply_ratio"],
+
+                features["service_to_house"],
+                features["factory_to_house"],
+
+                features["used_service_early"],
+                features["used_factory_early"],
+
+                features["early_service_ratio"],
+                features["early_factory_ratio"],
+                features["early_service_to_house"],
+                features["early_factory_to_house"],
+
+                features["final_turn"],
+                features["final_gold"],
+                features["final_population"],
+                features["final_supply"],
+                features["final_ap"],
+                features["final_satisfaction"],
+                features["final_service"],
+                features["final_pollution"],
+                features["final_tax_income"]
+            ))
+
+        self.conn.commit()

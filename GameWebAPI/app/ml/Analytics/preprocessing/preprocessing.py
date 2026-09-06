@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from GameWebAPI.app.ml.Analytics.preprocessing.PreprocessingExporter import export_session_features
+from GameWebAPI.app.services.postgre_service import save_
 
 # ====== SET YOUR FILE PATHS HERE ======
 action_log_path = Path(r"C:\UnityProjects\FYP\Analytics\Logs\action_logs_20260401_191909.csv")
