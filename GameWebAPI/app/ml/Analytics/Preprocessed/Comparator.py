@@ -1,51 +1,29 @@
 import pandas as pd
-import numpy as np
 
 folder = r"C:\UnityProjects\FYP\GameWebAPI\app\ml\Analytics\Preprocessed"
 
-old = pd.read_csv(f"{folder}\\session_features.csv")
-new = pd.read_csv(f"{folder}\\session_features2.csv")
+old = pd.read_csv(folder + r"\session_features.csv")
+new = pd.read_csv(folder + r"\session_features2.csv")
 
-merged = old.merge(
-    new,
-    on="session_id",
-    suffixes=("_old", "_new"),
-    how="outer"
-)
+# Check shape
+print("Old shape:", old.shape)
+print("New shape:", new.shape)
 
-feature_columns = [
-    col for col in old.columns
-    if col != "session_id"
-]
+# Check columns
+print("\nColumns only in old:")
+print(set(old.columns) - set(new.columns))
 
-summary = []
+print("\nColumns only in new:")
+print(set(new.columns) - set(old.columns))
 
-for col in feature_columns:
+# Compare common columns/rows
+common_columns = list(set(old.columns) & set(new.columns))
 
-    old_col = f"{col}_old"
-    new_col = f"{col}_new"
+old_common = old[common_columns]
+new_common = new[common_columns]
 
-    changed = ~np.isclose(
-        merged[old_col],
-        merged[new_col],
-        equal_nan=True
-    )
+# Sort so row ordering doesn't matter
+old_common = old_common.sort_values(common_columns).reset_index(drop=True)
+new_common = new_common.sort_values(common_columns).reset_index(drop=True)
 
-    summary.append({
-        "feature": col,
-        "sessions_changed": changed.sum(),
-        "max_difference": (
-            (merged[old_col] - merged[new_col])
-            .abs()
-            .max()
-        ),
-        "mean_difference": (
-            (merged[old_col] - merged[new_col])
-            .abs()
-            .mean()
-        )
-    })
-
-summary_df = pd.DataFrame(summary)
-
-print(summary_df.to_string(index=False))
+print("\nSame contents:", old_common.equals(new_common))

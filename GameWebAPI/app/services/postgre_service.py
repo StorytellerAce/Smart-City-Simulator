@@ -3,6 +3,7 @@ from psycopg2.extras import Json
 from app.models.dto import TurnSnapshotDto
 from app.models.TurnActionSummaryDto import TurnActionSummaryDto
 import os
+import panda as pd
 
 class PostgresService:
     def __init__(self):
@@ -221,6 +222,15 @@ class PostgresService:
             ]
         }
 
+    def get_session_features(self) -> pd.DataFrame:
+        query = """
+            SELECT *
+            FROM session_features
+            ORDER BY session_id;
+        """
+
+        return pd.read_sql_query(query, self.conn)
+    
     def save_session_features(self, features: dict):
         with self.conn.cursor() as cur:
             cur.execute("""

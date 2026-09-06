@@ -8,7 +8,7 @@ CREATE TABLE session_features (
     avg_demolish_ratio DOUBLE PRECISION,
     avg_build_ratio DOUBLE PRECISION,
 
-    avg_build_house_ratio DOUBLE PRECISION,
+avg_build_house_ratio DOUBLE PREpoCISION,
     avg_build_factory_ratio DOUBLE PRECISION,
     avg_build_service_ratio DOUBLE PRECISION,
     avg_build_supply_ratio DOUBLE PRECISION,
