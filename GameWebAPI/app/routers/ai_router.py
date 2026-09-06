@@ -15,6 +15,7 @@ def get_session(session_id: str):
 
 @router.websocket("/ws/{session_id}")
 async def session_websocket(websocket: WebSocket, session_id: str):
+    print("WEBSOCKET HIT:", session_id)
     if not session_service.session_exists(session_id):
         await websocket.close(code=1008)
         return

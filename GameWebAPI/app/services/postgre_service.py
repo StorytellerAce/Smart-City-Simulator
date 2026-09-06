@@ -2,16 +2,16 @@ import psycopg2
 from psycopg2.extras import Json
 from app.models.dto import TurnSnapshotDto
 from app.models.TurnActionSummaryDto import TurnActionSummaryDto
-
+import os
 
 class PostgresService:
     def __init__(self):
         self.conn = psycopg2.connect(
-            host="localhost",
-            database="postgres",
-            user="postgres",
-            password="teoh0628",
-            port=5432
+            host=os.getenv("DB_HOST"),
+            database=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            port=os.getenv("DB_PORT")
         )
 
     def save_session(self, session: dict):
@@ -34,7 +34,7 @@ class PostgresService:
 
     def save_turn_snapshot(self, session_id: str, snapshot: TurnSnapshotDto):
         if isinstance(snapshot, dict):
-            snapshot = TurnSnapshotDto(**self.unity_snapshot_to_snake(snapshot))
+            snapshot = TurnSnapshotDto.model_validate(snapshot)
 
         with self.conn.cursor() as cur:
             cur.execute("""
@@ -55,16 +55,23 @@ class PostgresService:
                     factory_count,
                     road_count,
                     average_satisfaction_index,
+                    min_satisfaction_index,
+                    max_satisfaction_index,
                     average_pollution_index,
+                    min_pollution_index,
+                    max_pollution_index,
                     average_service_index,
+                    min_service_index,
+                    max_service_index,
                     houses_near_factory_count,
                     houses_without_service_count,
                     houses_low_satisfaction_count,
                     total_tax_income
                 )
                 VALUES (
-                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                    %s, %s, %s, %s, %s, %s, %s, %s
                 );
             """, (
                 session_id,
@@ -72,22 +79,37 @@ class PostgresService:
                 snapshot.gold,
                 snapshot.population,
                 snapshot.total_supply_provided,
+
                 snapshot.ap,
                 snapshot.ap_used,
+
                 snapshot.upgrade_count,
                 snapshot.demolish_count,
+
                 snapshot.small_house_count,
                 snapshot.big_house_count,
+
                 snapshot.supply_count,
                 snapshot.service_count,
                 snapshot.factory_count,
                 snapshot.road_count,
+
                 snapshot.average_satisfaction_index,
+                snapshot.min_satisfaction_index,
+                snapshot.max_satisfaction_index,
+
                 snapshot.average_pollution_index,
+                snapshot.min_pollution_index,
+                snapshot.max_pollution_index,
+
                 snapshot.average_service_index,
+                snapshot.min_service_index,
+                snapshot.max_service_index,
+
                 snapshot.houses_near_factory_count,
                 snapshot.houses_without_service_count,
                 snapshot.houses_low_satisfaction_count,
+
                 snapshot.total_tax_income
             ))
 

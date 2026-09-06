@@ -45230,9 +45230,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cdb60c4f8032a6a4c919627f9c31c748, type: 2}
   townHallDefinition: {fileID: 11400000, guid: 0e2dbae0bc1baec48bce260ecac8ba03, type: 2}
   sessionIdText: {fileID: 1372414027}
+  settings: {fileID: 11400000, guid: e4a6061f342053b4f84a03e786838744, type: 2}
   TestButton: {fileID: 0}
-  baseUrl: http://localhost:8000
-  baseWsUrl: ws://localhost:8000/ai/ws
 --- !u!1 &1262704889
 GameObject:
   m_ObjectHideFlags: 0

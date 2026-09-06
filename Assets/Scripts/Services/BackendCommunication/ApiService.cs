@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 public class ApiService
 {
-    private string baseUrl = "http://localhost:8000";
+    private string baseUrl;
 
     public ApiService(string baseUrl)
     {

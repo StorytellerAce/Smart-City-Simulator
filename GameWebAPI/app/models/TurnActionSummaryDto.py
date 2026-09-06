@@ -1,33 +1,42 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List
 
-
 class PointDto(BaseModel):
-    x: int
-    y: int
-
+    x: int = Field(alias="X")
+    y: int = Field(alias="Y")
 
 class BuildActionDto(BaseModel):
-    building_type: str
-    position: PointDto
-
+    building_type: int = Field(alias="BuildingType")
+    position: PointDto = Field(alias="Position")
 
 class UpgradeActionDto(BaseModel):
-    building_type: str
-    position: PointDto
-    from_level: int
-    to_level: int
-
+    building_type: int = Field(alias="BuildingType")
+    position: PointDto = Field(alias="Position")
+    from_level: int = Field(alias="FromLevel")
+    to_level: int = Field(alias="ToLevel")
 
 class DemolishActionDto(BaseModel):
-    building_type: str
-    position: PointDto
+    building_type: int = Field(alias="BuildingType")
+    position: PointDto = Field(alias="Position")
 
 
 class TurnActionSummaryDto(BaseModel):
-    turn: int
-    actions_taken: int
+    model_config = ConfigDict(populate_by_name=True)
 
-    buildings_placed: List[BuildActionDto] = []
-    upgrades: List[UpgradeActionDto] = []
-    demolitions: List[DemolishActionDto] = []
+    turn: int = Field(alias="Turn")
+    actions_taken: int = Field(alias="ActionsTaken")
+
+    buildings_placed: List[BuildActionDto] = Field(
+        default_factory=list,
+        alias="BuildingsPlaced"
+    )
+
+    upgrades: List[UpgradeActionDto] = Field(
+        default_factory=list,
+        alias="Upgrades"
+    )
+
+    demolitions: List[DemolishActionDto] = Field(
+        default_factory=list,
+        alias="Demolitions"
+    )
